@@ -1,0 +1,84 @@
+[project]
+name = "solar-tracking"
+version = "0.1.0"
+description = "A Python package for calculating solar position and tracking parameters."
+readme = "README.md"
+requires-python = ">=3.13"
+authors = [
+    { name = "Alexandre Savio", email = "alexsavio@gmail.com" }
+]
+license = { text = "MIT" }
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/alexsavio/solar-tracker"
+Issues = "https://github.com/alexsavio/solar-tracker/issues"
+
+[project.scripts]
+solar-tracking = "solar_tracking.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/solar_tracking"]
+
+[dependency-groups]
+dev = [
+  "matplotlib>=3.8.0",
+  "ipykernel>=6.29.0",
+  "ipywidgets>=8.1.0",
+  "numpy>=1.26.0",
+  "jupyter>=1.1.1",
+]
+lint = ["mypy>=1.19.1", "pydocstyle>=6.3.0", "ruff>=0.13.1"]
+test = [
+  "pytest>=8.4.2",
+  "pytest-mock>=3.15.0",
+  "pytest-cov>=7.0.0",
+  "freezegun>=1.5.5",
+  "better-exceptions>=0.3.3",
+  "pytest-socket>=0.7.0",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+ignore = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["solar_tracking"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --cov=solar_tracking"
+testpaths = [
+    "tests",
+]
+pythonpath = "src"

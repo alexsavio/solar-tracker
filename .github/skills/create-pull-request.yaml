@@ -1,0 +1,38 @@
+name: Create Pull Request
+description: Creates a new pull request on GitHub using the gh CLI.
+version: 1.0.0
+tags:
+  - github
+  - cli
+  - pr
+inputs:
+  title:
+    type: string
+    description: The title of the pull request.
+    required: true
+  body:
+    type: string
+    description: The body content of the pull request.
+    required: true
+  base:
+    type: string
+    description: The branch you want your changes merged into.
+    required: false
+  head:
+    type: string
+    description: The branch that contains your changes.
+    required: false
+  draft:
+    type: boolean
+    description: Mark the pull request as a draft.
+    default: false
+    required: false
+execution:
+  type: shell
+  command: |
+    gh pr create \
+      --title "{{title}}" \
+      --body "{{body}}" \
+      {{#if base}}--base "{{base}}"{{/if}} \
+      {{#if head}}--head "{{head}}"{{/if}} \
+      {{#if draft}}--draft{{/if}}
