@@ -1,10 +1,10 @@
+---
 name: Code Review
-description: Analyzes code changes for potential bugs, style issues, and performance improvements.
+description: Analyzes code changes for potential bugs, style issues, and performance
+  improvements.
 version: 1.0.0
-tags:
-  - coding
-  - review
-  - quality
+tags: [coding, review, quality]
+
 inputs:
   code_diff:
     type: string
@@ -14,19 +14,18 @@ inputs:
     type: string
     description: The programming language of the code.
     required: false
+
 execution:
   type: prompt
-  template: |
+  template: |-
     You are an expert code reviewer. Review the following code changes.
     Focus on:
     1. Potential bugs and edge cases.
     2. Code style and adherence to best practices.
     3. Performance optimizations.
     4. Security vulnerabilities.
-
     Code to review:
     ```{{language}}
     {{code_diff}}
     ```
-
     Provide your feedback in a structured markdown format.

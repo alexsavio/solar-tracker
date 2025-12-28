@@ -55,6 +55,11 @@ clean-caches:
 # Format your code
 format:
   uv run ruff format .
+  uv run yamlfix .
+
+# Format YAML files
+format-yaml:
+  uv run yamlfix .
 
 # Run mypy check
 lint-mypy:
@@ -64,8 +69,12 @@ lint-mypy:
 lint-ruff:
   uv run ruff check --fix .
 
+# Check YAML files
+lint-yaml:
+  uv run yamllint .
+
 # Run all code checks
-lint: lint-ruff lint-mypy
+lint: lint-ruff lint-mypy lint-yaml
 
 # Run tests with coverage
 test args="":

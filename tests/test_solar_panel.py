@@ -1,4 +1,5 @@
 import math
+
 from solar_tracking.solar_panel import SolarPanel
 
 

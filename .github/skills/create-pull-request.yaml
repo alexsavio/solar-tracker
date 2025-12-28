@@ -1,10 +1,9 @@
+---
 name: Create Pull Request
 description: Creates a new pull request on GitHub using the gh CLI.
 version: 1.0.0
-tags:
-  - github
-  - cli
-  - pr
+tags: [github, cli, pr]
+
 inputs:
   title:
     type: string
@@ -27,9 +26,10 @@ inputs:
     description: Mark the pull request as a draft.
     default: false
     required: false
+
 execution:
   type: shell
-  command: |
+  command: |-
     gh pr create \
       --title "{{title}}" \
       --body "{{body}}" \

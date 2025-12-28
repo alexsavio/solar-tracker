@@ -1,0 +1,90 @@
+---
+name: 'Template: Run code checks on Python project'
+
+on:
+  workflow_call:
+    inputs:
+      ## General
+      working-directory:
+        required: true
+        type: string
+        description: |
+          "Directory in which the terraform project is located"
+      run-tests:
+        required: false
+        type: boolean
+        description: |
+          "Run tests"
+        default: true
+      python-version:
+        required: false
+        type: string
+        description: |
+          "Python version to use for the lambda"
+        default: '3.12'
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        id: setup-uv
+        with:
+          version: latest
+          enable-cache: true
+          cache-dependency-glob: |
+            **/uv.lock
+            **/pyproject.toml
+
+      - name: Install Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Cache hit
+        run: echo '${{ steps.setup-uv.outputs.cache-hit }}' # true if cache-hit occured on the primary key
+
+      - name: Install CI dependencies
+        run: uv sync --all-extras
+      - uses: extractions/setup-just@v2
+
+      - name: ruff check
+        id: ruff
+        run: uv run ruff check --output-format=github --fix .
+        continue-on-error: true
+
+      - name: ruff format check
+        id: ruff_format
+        run: uv run ruff format --check
+        continue-on-error: true
+
+      - name: mypy
+        id: mypy
+        run: uv run mypy .
+        continue-on-error: true
+
+      - name: pytest
+        id: pytest
+        if: ${{ inputs.run-tests }}
+        run: uv run pytest --cov -vvv
+        continue-on-error: true
+
+      - name: Errors Found
+        if: >-
+          steps.pytest.outcome == 'failure' ||
+          steps.mypy.outcome == 'failure' ||
+          steps.ruff.outcome == 'failure' ||
+          steps.ruff_format.outcome == 'failure'
+        run: exit 1

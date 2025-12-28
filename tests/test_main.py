@@ -1,9 +1,9 @@
 import math
 
 from solar_tracking.main import (
+    calculate_azimuth,
     calculate_declination,
     calculate_elevation,
-    calculate_azimuth,
     calculate_equation_of_time,
     calculate_sunrise_sunset,
 )

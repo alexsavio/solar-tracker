@@ -1,10 +1,9 @@
+---
 name: Generate Documentation
 description: Generates comprehensive documentation for a given code snippet or file.
 version: 1.0.0
-tags:
-  - coding
-  - documentation
-  - docs
+tags: [coding, documentation, docs]
+
 inputs:
   code:
     type: string
@@ -15,18 +14,16 @@ inputs:
     description: The desired output format (e.g., Markdown, reStructuredText, Javadoc).
     default: Markdown
     required: false
+
 execution:
   type: prompt
-  template: |
+  template: |-
     You are a technical writer. Generate documentation for the following code.
-
     Output Format: {{format}}
-
     Include:
     - A high-level summary of what the code does.
     - Detailed descriptions of functions, classes, and parameters.
     - Usage examples if applicable.
-
     Code:
     ```
     {{code}}

@@ -1,0 +1,14 @@
+---
+name: CI
+
+on:
+  pull_request:
+  schedule:
+    - cron: 0 0 * * 0  # Every Sunday at midnight
+
+jobs:
+  python-quality:
+    uses: ./.github/workflows/python-quality.tpl.yml
+    with:
+      working-directory: .
+      python-version: '3.13'
