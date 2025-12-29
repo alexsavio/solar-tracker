@@ -10,6 +10,11 @@ install:
 install-prod:
   uv sync --no-default-groups
 
+# Install and enable pre-commit hooks locally
+pre-commit-install:
+  uv run python -m pip install --upgrade pre-commit
+  uv run pre-commit install
+
 # Upgrade the dependencies to the latest accepted versions
 upgrade:
   uv lock --upgrade
