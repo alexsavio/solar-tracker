@@ -90,3 +90,11 @@ test-last-failed:
 
 # Run format, linting, then tests
 check: format lint test
+
+# Run the main application
+run_main:
+  uv run python -m solar_tracking.main
+
+# Run Jupyter Lab
+jupyter:
+  uv run jupyter lab

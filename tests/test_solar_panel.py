@@ -1,5 +1,7 @@
 import math
 
+import pytest
+
 from solar_tracking.solar_panel import SolarPanel
 
 
@@ -50,3 +52,31 @@ def test_incidence_angle_vertical_panel():
         sun_azimuth=180.0, sun_elevation=0.0
     )
     assert math.isclose(incidence_back, 180.0, abs_tol=1e-5)
+
+
+def test_estimate_monthly_energy_zero_dni():
+    panel = SolarPanel(latitude=0.0, longitude=0.0, azimuth=0.0, tilt=0.0)
+    energy = panel.estimate_monthly_energy(
+        month=6, area_m2=1.0, efficiency=0.2, dni=0.0, time_step_hours=1.0
+    )
+    assert energy == 0.0
+
+
+def test_estimate_monthly_energy_zero_area():
+    panel = SolarPanel(latitude=0.0, longitude=0.0, azimuth=0.0, tilt=0.0)
+    energy = panel.estimate_monthly_energy(month=6, area_m2=0.0)
+    assert energy == 0.0
+
+
+def test_estimate_monthly_energy_basic_positive():
+    panel = SolarPanel(latitude=40.0, longitude=0.0, azimuth=0.0, tilt=30.0)
+    energy = panel.estimate_monthly_energy(
+        month=6, area_m2=1.0, efficiency=0.2, dni=800.0, time_step_hours=1.0
+    )
+    assert energy > 0.0
+
+
+def test_estimate_monthly_energy_invalid_month():
+    panel = SolarPanel(latitude=0.0, longitude=0.0, azimuth=0.0, tilt=0.0)
+    with pytest.raises(ValueError):
+        panel.estimate_monthly_energy(month=0)

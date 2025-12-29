@@ -53,6 +53,10 @@ test = [
   "pytest-socket>=0.7.0",
 ]
 
+[tool.uv]
+# Make all dependency groups installed by default when running `uv sync`
+default-groups = ["dev", "lint", "test"]
+
 [tool.ruff]
 line-length = 88
 target-version = "py313"
@@ -88,4 +92,5 @@ pythonpath = "src"
 [tool.yamlfix]
 section_whitelines = 1
 whitelines = 1
+exclude = [".venv/**"]
 
